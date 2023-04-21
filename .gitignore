@@ -1,0 +1,7 @@
+*.DS_Store
+/routes.ts
+/Pages/
+/Column/
+/meta-front-g
+*.sh
+main

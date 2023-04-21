@@ -1,0 +1,160 @@
+# meta-front-g配置文件
+#
+# 会被转换成小写来匹配
+# 字段设置
+[field]
+# 不处理的实体名，直接跳过，不生成.tsx
+# 实体名包含以下则忽略
+ignoreEntity = ["edges", "id", "delete"]
+# 忽略小写开头的实体名
+ingoreLowerFirst = true
+
+# 不处理的字段，直接跳过，不生成column
+# 如 edges?: SpectrumAlertEdges;会被忽略
+# 字段名相等则忽略
+ignoreField = ["edges", "id"]
+
+# 以下字段需要根据名称处理，并通过column.templates中的模板生成对应的列
+# tenantId?: number;
+parseWithField = ["tenant_id", "created_at", "updated_at", "time", "remark","start_time","end_time"]
+# 以下字段需要根据类型处理
+parseWithType = ["boolean", "string[]", "string", "number"]
+# 其他使用<ProDescriptionsLayout> 进行渲染
+
+# 扩展字段，给实体额外增加字段
+extendField = ["search"]
+
+
+# 列设置（模板）
+[column]
+# 名称跟[field]中的配置一致
+# 全部小写
+[[column.templates]]
+# search会被..searchColumns,替换，以下类似
+key = "search"
+value = "...searchColumns,"
+
+[[column.templates]]
+key = "tenant_id"
+value = "...projectColumns,"
+
+[[column.templates]]
+key = "created_at"
+value = "...createTimeColumns,"
+[[column.templates]]
+key = "updated_at"
+value = "...updateTimeColumns,"
+
+[[column.templates]]
+key = "remark"
+value = "...remarkColumns,"
+
+[[column.templates]]
+key = "start_time"
+value = "...startTimeColumns,"
+[[column.templates]]
+key = "end_time"
+value = "...endTimeColumns,"
+
+
+[[column.templates]]
+key = "time"
+value = """
+//时间
+{
+title: '时间',
+dataIndex: '%s',
+valueType: 'dateTime',
+hideInSearch: true,
+sorter: true,
+},
+//时间范围
+{
+title: '时间',
+dataIndex: '%s',
+valueType: 'dateTimeRange',
+// table中不显示
+hideInTable: true,
+hideInDescriptions: true,
+search: {
+    transform: (value) => ({
+//dateTimeRange 转换 成gte和lte字段
+%s_gte: value[0],
+%s_lte: value[1],
+    }),
+},
+},"""
+
+[[column.templates]]
+key = "boolean"
+value = """{
+title: '%s',
+dataIndex: '%s',
+valueType: 'select',
+valueEnum: valueEnum,
+hideInSearch:true,
+hideInTable:true,
+},"""
+
+[[column.templates]]
+key = "string[]"
+value = """{
+title: '%s',
+dataIndex: '%s',
+valueType: 'textarea',
+hideInTable: true,
+render: (_, row) => <ShowArrayProCardLayout data={row.%s} title='可折叠' />
+},"""
+
+[[column.templates]]
+key = "string"
+value = """{
+title: '%s',
+dataIndex: '%s',
+valueType: 'text',
+hideInSearch:true,
+hideInTable:true,
+},"""
+
+[[column.templates]]
+key = "number"
+value = """{
+title: '%s',
+dataIndex: '%s',
+valueType: 'text',
+hideInSearch:true,
+hideInTable:true,
+},"""
+
+[[column.templates]]
+key = "default"
+value = """{
+title: '%s',
+dataIndex: '%s',
+valueType: 'textarea',
+hideInTable: true,
+render: (_, record) => (<ProDescriptionsLayout data={record.%s} columns={%sColumns} column={1} />)
+},"""
+
+# 路由设置（模板）
+[router]
+[[router.templates]]
+key = "index"
+value = """
+{
+    path: '/%s',
+    name: '%s',
+    icon: 'table',
+    component: './%s',
+},
+"""
+[[router.templates]]
+key = "Detail"
+value = """
+{
+    path: '/%s/detail/:id',
+    hideInMenu: true,
+    name: 'Detail',
+    component: './%s/Detail',
+},
+"""
