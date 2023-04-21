@@ -10,6 +10,12 @@ Antd Pro 项目可以通过 openAPI 文档生成 Services 文件，但是还是�
 
 于是诞生了这个项目，通过手动提取各个相关组件，完成通用页面后，根据 `typings.d.ts`文件生成列数据、页面数据、路由文件；后续只需调整字段，调整新增/编辑表单，处理字段数据转换，调整路由即可完成页面开发。
 
+## Installation
+
+`go install github.com/one-meta/meta-front-g@latest`
+
+或 clone 项目后，`go install`
+
 ## 用法（步骤）
 
 1. 复制`typings.d.ts`到生成器目录，或者在运行时指定 `typings.d.ts`文件的绝对路径
