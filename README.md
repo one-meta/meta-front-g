@@ -16,7 +16,7 @@ Antd Pro 项目可以通过 openAPI 文档生成 Services 文件，但是还是�
 
 或 clone 项目后，`go install`
 
-## 用法（步骤）
+## 用法（步骤）【项目使用建议参考 [meta wiki](https://github.com/one-meta/meta/wiki/)】
 
 1. 复制`typings.d.ts`到生成器目录，或者在运行时指定 `typings.d.ts`文件的绝对路径
 2. 根据实际情况修改页面模板 BasePage 中的页面（也可以生成后，再修改生成的页面）
